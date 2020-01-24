@@ -83,7 +83,7 @@ pipeline {
          stage('Docker Image Deploy') {
             steps {
                 sh 'echo "--=-- Deploying Docker Image Stage --=--"'
-                sh 'docker run -d -p 8085:8080 simple-boot'
+                sh 'docker run -d --name=simple-boot -p 8085:8080 simple-boot'
             }
         }
     }
