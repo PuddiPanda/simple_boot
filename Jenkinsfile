@@ -38,9 +38,9 @@ pipeline {
             steps {
                 jacoco (
                     execPattern: 'target/*.exec',
-                    classPatern: 'target/classes',
+                    classPattern: 'target/classes',
                     sourcePattern: 'src/main/java',
-                    excluisionPattern: 'src/test*'
+                    exclusionPattern: 'src/test*'
                 )
             }
         }
@@ -50,6 +50,20 @@ pipeline {
                 sh 'echo "--=-- Sanity check test projet --=--"'
                 sh 'mvn checkstyle:checkstyle pmd:pmd'
             }
+            post {
+                always {
+                    recordIssues enabledForFailure: true, tools: [checkStyle()]
+                    recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+                }
+            }            
+        }
+        
+        stage('SonarQube Report') {
+            steps {
+                withSonarQubeEnv('mySonar') {
+                sh 'mvn sonar:sonar'                    
+                }
+            }       
         }
         
         stage('Package') {
@@ -57,14 +71,8 @@ pipeline {
                 sh 'echo "--=-- Package Stage --=--"'
                 sh 'mvn package'
             }
-            post {
-                always {
-                    recordIssues enabledForFailure: true, tools: [checkStyle()]
-                    recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
-                }
-            }
-        }
-        
 
+        }
+       
     }
 }
