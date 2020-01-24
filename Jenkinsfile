@@ -58,6 +58,14 @@ pipeline {
             }            
         }
         
+        stage('SonarQube Report') {
+            steps {
+                withSonarQubeEnv('mySonar') {
+                sh 'mvn sonar:sonar'                    
+                }
+            }       
+        }
+        
         stage('Package') {
             steps {
                 sh 'echo "--=-- Package Stage --=--"'
@@ -65,7 +73,6 @@ pipeline {
             }
 
         }
-        
-
+       
     }
 }
