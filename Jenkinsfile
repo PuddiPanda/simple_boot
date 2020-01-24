@@ -58,13 +58,13 @@ pipeline {
             }            
         }
         
-        stage('SonarQube Report') {
+/*        stage('SonarQube Report') {
             steps {
                 withSonarQubeEnv('mySonar') {
                 sh 'mvn sonar:sonar'                    
                 }
             }       
-        }
+        } */
         
         stage('Package') {
             steps {
