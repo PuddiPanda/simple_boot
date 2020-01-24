@@ -48,7 +48,7 @@ pipeline {
         stage('Sanity check') {
             steps {
                 sh 'echo "--=-- Sanity check test projet --=--"'
-                sh 'mvn checktstyle:checkstyle'
+                sh 'mvn checkstyle:checkstyle'
             }
         }
         
