@@ -34,6 +34,17 @@ pipeline {
             }
         }
         
+        stage('Code coverage') {
+            steps {
+                jacoco (
+                    execPattern: 'target/*.exec',
+                    classPatern: 'target/classes',
+                    sourcePattern: 'src/main/java',
+                    excluisionPattern: 'src/test*'
+                )
+            }
+        }
+        
         stage('Package') {
             steps {
                 sh 'echo "--=-- Package Stage --=--"'
