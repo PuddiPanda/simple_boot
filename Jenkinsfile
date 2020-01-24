@@ -6,6 +6,29 @@ pipeline {
     }
     
     stages {
+        
+        stage ('Cleaning workspace') {
+            steps {
+                sh 'echo "--=-- Cleaning stage --=--"'
+                sh 'mvn clean'
+                script {
+                    try {
+                        sh 'docker stop simple-boot && docker rm simple-boot'
+                    } catch (Exception e) {
+                        sh 'echo "--=-- No container to remove --=--"'
+                    }
+                }
+                
+                script {
+                    try {
+                        sh 'docker rmi simple-boot'
+                    } catch (Exception e) {
+                        sh 'echo "--=-- No image to remove --=--"'
+                    }
+                }                
+            }
+        }
+        
         stage ('Checkout') {
             steps {
                 git url: 'https://github.com/PuddiPanda/simple_boot.git'
@@ -82,7 +105,7 @@ pipeline {
         
          stage('Docker Image Deploy') {
             steps {
-                sh 'echo "--=-- Deploying Docker Image Stage --=--"'
+                sh 'echo "--=-- Deploying App --=--"'
                 sh 'docker run -d --name=simple-boot -p 8085:8080 simple-boot'
             }
         }
