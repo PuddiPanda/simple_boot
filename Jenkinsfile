@@ -48,7 +48,7 @@ pipeline {
         stage('Sanity check') {
             steps {
                 sh 'echo "--=-- Sanity check test projet --=--"'
-                sh 'mvn checkstyle:checkstyle'
+                sh 'mvn checkstyle:checkstyle pmd:pmd'
             }
         }
         
@@ -60,6 +60,7 @@ pipeline {
             post {
                 always {
                     recordIssues enabledForFailure: true, tools: [checkStyle()]
+                    recordIssues enabledForFailure: true, tools: pmdParser(pattern: '**/target/pmd.xml'
                 }
             }
         }
