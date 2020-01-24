@@ -60,7 +60,7 @@ pipeline {
             post {
                 always {
                     recordIssues enabledForFailure: true, tools: [checkStyle()]
-                    recordIssues enabledForFailure: true, tools: pmdParser(pattern: '**/target/pmd.xml')
+                    recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
                 }
             }
         }
