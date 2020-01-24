@@ -50,6 +50,12 @@ pipeline {
                 sh 'echo "--=-- Sanity check test projet --=--"'
                 sh 'mvn checkstyle:checkstyle pmd:pmd'
             }
+            post {
+                always {
+                    recordIssues enabledForFailure: true, tools: [checkStyle()]
+                    recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+                }
+            }            
         }
         
         stage('Package') {
@@ -57,12 +63,7 @@ pipeline {
                 sh 'echo "--=-- Package Stage --=--"'
                 sh 'mvn package'
             }
-            post {
-                always {
-                    recordIssues enabledForFailure: true, tools: [checkStyle()]
-                    recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
-                }
-            }
+
         }
         
 
