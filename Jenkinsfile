@@ -71,8 +71,20 @@ pipeline {
                 sh 'echo "--=-- Package Stage --=--"'
                 sh 'mvn package'
             }
-
         }
-       
+        
+        stage('Docker build') {
+            steps {
+                sh 'echo "--=-- Building Docker Image Stage --=--"'
+                sh 'docker build -t simple-boot .
+            }
+        }
+        
+         stage('Docker Image Deploy') {
+            steps {
+                sh 'echo "--=-- Deploying Docker Image Stage --=--"'
+                sh 'docker run -p 8085:8080 simple-boot'
+            }
+        }
     }
 }
