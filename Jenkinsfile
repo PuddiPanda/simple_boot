@@ -76,7 +76,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 sh 'echo "--=-- Building Docker Image Stage --=--"'
-                sh 'docker build -t simple-boot .
+                sh 'docker build -t simple-boot .'
             }
         }
         
