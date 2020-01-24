@@ -45,10 +45,22 @@ pipeline {
             }
         }
         
+        stage('Sanity check') {
+            steps {
+                sh 'echo "--=-- Sanity check test projet --=--"'
+                sh 'mvn checktstyle:checkstyle'
+            }
+        }
+        
         stage('Package') {
             steps {
                 sh 'echo "--=-- Package Stage --=--"'
                 sh 'mvn package'
+            }
+            post {
+                always {
+                    recordIssues enabledForFailure: true, tools: [checkStyle()]
+                }
             }
         }
         
